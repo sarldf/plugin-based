@@ -13,6 +13,7 @@
       <module>interface</module>
       <module>plugin-a</module>
       <module>plugin-b</module>
+      <module>javaspi</module>
     </modules>
 
     <properties>
