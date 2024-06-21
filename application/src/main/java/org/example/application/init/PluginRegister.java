@@ -54,23 +54,26 @@ public class PluginRegister extends ApplicationObjectSupport implements ImportBe
 
         }
 
-        //开启一个线程监听服务jar包目录,30秒扫一次
+        //开启一个线程监听服务jar包目录,10秒扫一次
         new Thread(() -> {
-            Set<String> currentServiceNames = ServiceContainer.getServiceNames();
-            Map<String,Class> pluginServices1 = getAllPluginService();
-            for (Map.Entry<String,Class> pluginServiceEntry : pluginServices1.entrySet()) {
-                String pluginServiceName = pluginServiceEntry.getKey();
-                Class<?> pluginServiceCls = pluginServiceEntry.getValue();
-                if(!currentServiceNames.contains(pluginServiceName)) {
-                    //注册到自定义服务容器
-                    registerPluginService(pluginServiceName,pluginServiceCls);
+            while(true){
+                Set<String> currentServiceNames = ServiceContainer.getServiceNames();
+                Map<String,Class> pluginServices1 = getAllPluginService();
+                for (Map.Entry<String,Class> pluginServiceEntry : pluginServices1.entrySet()) {
+                    String pluginServiceName = pluginServiceEntry.getKey();
+                    Class<?> pluginServiceCls = pluginServiceEntry.getValue();
+                    if(!currentServiceNames.contains(pluginServiceName)) {
+                        //注册到自定义服务容器
+                        registerPluginService(pluginServiceName,pluginServiceCls);
+                    }
+                }
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
-            try {
-                Thread.sleep(30000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+
         }).start();
 
     }

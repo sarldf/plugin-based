@@ -39,6 +39,10 @@ public class ServiceContainer {
         container.put(serviceName, service);
     }
 
+    public static void removeService(String serviceName) {
+        container.remove(serviceName);
+    }
+
     public static Object getService(String serviceName) {
         Object dataService = container.get(serviceName);
         if (dataService == null) {
